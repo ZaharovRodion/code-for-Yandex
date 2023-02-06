@@ -1,0 +1,105 @@
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.SymbolStore;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace OOP1
+{
+    class main
+    {
+
+        static void Main()
+        {
+            Magazine magaz = new Magazine(
+                "Maxim",
+                Frequency.Monthly,
+                new System.DateTime(2022, 9, 24),
+                20000
+            );
+            Console.WriteLine(
+                Frequency.Weekly.ToString() + ' ' +
+                Frequency.Monthly.ToString() + ' ' +
+                Frequency.Yearly.ToString() + "\n\n" +
+                magaz.ToShortString() + "\n\n" +
+                magaz.ToString() + '\n'
+            );
+            magaz.AddArticles(
+                new Article[2] {
+                    new Article (
+                        new Person("Dima", "Kiva", new System.DateTime(2003, 6, 12)),
+                        "Моя борьба",
+                        1.3
+                    ),
+                    new Article (
+                        new Person("Andrey", "Doljenko", new System.DateTime(2003, 10, 14)),
+                        "Рейд это моя жизнь! РЕЕЕЕЕЕЙД!",
+                        4.9
+                    )
+                }
+            );
+
+            Console.WriteLine(magaz.ToString() + '\n');
+
+
+            int rows, columns;
+            Console.Write("Enter 2 numbers (use . or , to separate numbers): ");
+            string[] input = Console.ReadLine().Split(new char[] { ',', '.' }, StringSplitOptions.RemoveEmptyEntries);
+            rows = Int32.Parse(input[0]);
+            columns = Int32.Parse(input[1]);
+
+
+            Article[] first = new Article[rows * columns];
+            for (int i = 0; i < rows * columns; ++i)
+                first[i] = new Article();
+
+            long start = Environment.TickCount;
+            for (int i = 0; i < rows * columns; ++i)
+                first[i].rait = 5;
+
+            Console.WriteLine("first mil. sec: " + (Environment.TickCount - start).ToString());
+
+            Article[,] second = new Article[rows, columns];
+            for (int i = 0; i < rows; ++i)
+                for (int j = 0; j < columns; ++j)
+                    second[i, j] = new Article();
+
+            start = Environment.TickCount;
+            for (int i = 0; i < rows; ++i)
+                for (int j = 0; j < columns; ++j)
+                    second[i, j].rait = 5;
+            Console.WriteLine("second mil. sec: " + (Environment.TickCount - start).ToString());
+
+            int c = 1, count = rows * columns;
+
+            while (count > c)
+            {
+                count -= c;
+                c++;
+            }
+
+            Article[][] third = new Article[c][];
+
+            for (int i = 0; i < c - 1; ++i)
+            {
+                third[i] = new Article[i + 1];
+            }
+
+            third[c - 1] = new Article[count];
+
+            for (int i = 0; i < third.Length; ++i)
+                for (int j = 0; j < third[i].Length; ++j)
+                    third[i][j] = new Article();
+
+            start = Environment.TickCount;
+            for (int i = 0; i < third.Length; ++i)
+                for (int j = 0; j < third[i].Length; ++j)
+                    third[i][j].rait = 5;
+
+            Console.WriteLine("third mil. sec: " + (Environment.TickCount - start).ToString());
+            Console.ReadLine();
+        }
+    }
+}
